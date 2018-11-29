@@ -1,0 +1,25 @@
+{
+    "name": "deamwork/trustoceanphp",
+    "description": "PHP composer package for TrustOcean API call.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Cooper",
+            "email": "master@deamwork.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "hassankhan/config": "dev-master",
+        "ext-json": "^1.6",
+        "ext-openssl": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "TrustOcean\\": "src/"
+        }
+    }
+}
