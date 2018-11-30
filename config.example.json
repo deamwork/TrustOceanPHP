@@ -1,0 +1,10 @@
+{
+  "account": {
+    "level": "developer",
+    "username": "",
+    "password": ""
+  },
+  "trustocean": {
+    "api_base": null
+  }
+}
