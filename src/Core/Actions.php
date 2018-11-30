@@ -24,15 +24,22 @@ class Actions
     private $config;
     private static $headers;
 
-    public function __construct()
+    public function __construct(string $config_file)
     {
         // get config
-        $this->config = Config::load(__DIR__.'/config.json');
-        if ($this->config->get('account.level') == 'partner') {
-            $base_uri = 'https://www.trustocean.com/partner/api/ssl.php';
-        } else {
-            $base_uri = 'https://api.trustocean.com/ssl/v1';
+        $this->config = Config::load($config_file);
+        switch ($this->config->get('account.level')) {
+            case 'partner':
+                $base_uri = 'https://www.trustocean.com/partner/api/ssl.php';
+                break;
+            case 'custom':
+                $base_uri = $this->config->get('trustocean.api_base');
+                break;
+            case 'developer':
+            default:
+                $base_uri = 'https://api.trustocean.com/ssl/v1';
         }
+
         self::$httpClient = new HttpClient([
             'base_uri' => $base_uri
         ]);
@@ -41,11 +48,12 @@ class Actions
     /*
      * responseHandler
      * Handle response from Trust Ocean API server
+     *
      * @param   JSONObject  $http_response
      * @throw   ResponseException
      * @return  JSONObject
      */
-    public function responseHandler(JSONObject $http_response)
+    protected function responseHandler(JSONObject $http_response)
     {
         if ($http_response->status == 'error') {
             throw new ResponseException($http_response->message, $http_response->code);
@@ -62,12 +70,12 @@ class Actions
      * @throws  ResponseException
      * @return  array   $params
      */
-    public function sendRequest(string $action, array $params)
+    protected function sendRequest(string $action, array $params)
     {
         $base_params = [
             'action'   => $action,
-            'username' => $this->config['account']['username'],
-            'password' => $this->config['account']['password'],
+            'username' => $this->config->get('account.username'),
+            'password' => $this->config->get('account.password'),
         ];
         $response = self::$httpClient->post(null, [
             'http_errors' => true,
