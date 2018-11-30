@@ -28,16 +28,15 @@ class Actions
     {
         // get config
         $this->config = Config::load($config_file);
-        switch ($this->config->get('account.level')) {
-            case 'partner':
-                $base_uri = 'https://www.trustocean.com/partner/api/ssl.php';
-                break;
-            case 'custom':
-                $base_uri = $this->config->get('trustocean.api_base');
-                break;
-            case 'developer':
-            default:
-                $base_uri = 'https://api.trustocean.com/ssl/v1';
+
+        if ($this->config->get('account.level') == 'partner') {
+            $base_uri = 'https://www.trustocean.com/partner/api/ssl.php';
+        } elseif ($this->config->get('account.level') == 'developer') {
+            $base_uri = 'https://api.trustocean.com/ssl/v1';
+        } elseif (!is_null($this->config->get('trustocean.api_base'))) {
+            $base_uri = $this->config->get('trustocean.api_base');
+        } else {
+            throw new ValidationException('Unknown account level');
         }
 
         self::$httpClient = new HttpClient([
