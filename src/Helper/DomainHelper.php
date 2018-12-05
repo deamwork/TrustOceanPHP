@@ -10,6 +10,7 @@
 namespace TrustOcean\Helper;
 
 use TrustOcean\Exception\ValidationException;
+use Pdp\Domain;
 
 class DomainHelper extends Helper
 {
@@ -38,22 +39,16 @@ class DomainHelper extends Helper
             }
         }
 
-        if (!preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain)) {
-            // Valid chars check
-            throw new ValidationException('Domain name is not valid. Abnormal character detected.');
+        // is IPv4 and IPv6
+        if (filter_var($domain, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return true;
         }
 
-        if (!preg_match("/^.{1,253}$/", $domain)) {
-            // Overall length check
-            throw new ValidationException('Domain name is not valid. Domain is too long (more than 253 chars).');
+        $domain = new Domain($domain);
+        if (!$domain->isResolvable() || !$domain->isKnown() || !$domain->isICANN() || $domain->isPrivate()) {
+            throw new ValidationException('Domain name or IP address is not valid.');
         }
 
-        if (!preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain)) {
-            // Length of each label
-            throw new ValidationException('Domain name is not valid. One or more label of domain is too long (more than 63 chars).');
-        }
-
-        return true;
     }
 
     public function domainInDCV(string $domain)

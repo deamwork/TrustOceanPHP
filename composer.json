@@ -15,7 +15,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "hassankhan/config": "dev-master",
         "ext-json": "^1.6",
-        "ext-openssl": "^7.2"
+        "ext-openssl": "^7.2",
+        "jeremykendall/php-domain-parser": "^5.0@dev"
     },
     "autoload": {
         "psr-4": {
