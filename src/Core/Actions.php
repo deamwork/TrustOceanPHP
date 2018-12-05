@@ -284,24 +284,6 @@ class Actions
                     'domain'        => $domain,
                 ];
 
-                /*
-                switch ($method) {
-                    case 'CSR_CNAME_HASH':
-                    case 'HTTP_CSR_HASH':
-                    case 'HTTPS_CSR_HASH':
-                    default:
-                        if (!$domain_helper->emailInDCV($method, $domain)) {
-                            $result[$domain] = 'Failed, Email not in DCV or not in paired domain';
-                            continue;
-                        }
-                        $params = [
-                            'trustocean_id' => $order_id,
-                            'method'        => $method,
-                            'domain'        => $domain,
-                        ];
-                }
-                */
-
                 try {
                     $this->sendRequest('syncChangeDCVMethod', $params);
                 } catch (ResponseException $e) {
