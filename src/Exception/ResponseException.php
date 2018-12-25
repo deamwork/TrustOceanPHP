@@ -9,20 +9,21 @@
 
 namespace TrustOcean\Exception;
 
-use TrustOcean\Definition\ErrorCode;
+use TrustOcean\Definition\ErrorCodeDefinitions as ErrorCode;
+use TrustOcean\Core\Exception;
 
-class ResponseException extends \Exception
+class ResponseException extends Exception
 {
     protected $code_definition;
 
     public function __construct($message, $code = 0, \Exception $previous = null)
     {
-        $this->code_definition = ErrorCode::define($this->getCode());
+        $this->code_definition = ErrorCode::define($code);
         parent::__construct($message, $code, $previous);
     }
 
     public function __toString()
     {
-        return "[E{$this->code}]: $this->code_definition\n{$this->message}\n";
+        return "[E{$this->code}]: $this->code_definition\nServer respond with: {$this->message}\n";
     }
 }

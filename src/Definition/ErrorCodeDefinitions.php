@@ -9,7 +9,8 @@
 
 namespace TrustOcean\Definition;
 
-class ErrorCode extends Definitions
+
+class ErrorCodeDefinitions extends Definitions
 {
 
     // General, start with 7788xx

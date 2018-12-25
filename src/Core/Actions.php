@@ -22,7 +22,6 @@ class Actions
 {
     private $httpClient;
     private $config;
-    private $headers;
 
     public function __construct(string $config_file)
     {
@@ -55,7 +54,7 @@ class Actions
     protected function responseHandler(JSONObject $http_response)
     {
         if ($http_response->status == 'error') {
-            throw new ResponseException($http_response->message, $http_response->code);
+            throw new ResponseException($http_response->message, $http_response->error_code);
         } else {
             return $http_response;
         }
@@ -78,7 +77,6 @@ class Actions
         ];
         $response = $this->httpClient->post(null, [
             'http_errors' => true,
-            'headers'     => $this->headers,
             'form_params' => array_merge($base_params, $params),
         ]);
 
