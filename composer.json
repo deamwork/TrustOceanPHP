@@ -9,11 +9,10 @@
             "email": "master@deamwork.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
         "guzzlehttp/guzzle": "~6.0",
-        "hassankhan/config": "dev-master",
+        "hassankhan/config": "~2.0.0",
         "ext-json": "^1.6",
         "ext-openssl": "^7.2",
         "jeremykendall/php-domain-parser": "^5.0@dev"
