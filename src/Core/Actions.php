@@ -20,9 +20,9 @@ use TrustOcean\Helper\OpenSSLHelper;
 
 class Actions
 {
-    private static $httpClient;
+    private $httpClient;
     private $config;
-    private static $headers;
+    private $headers;
 
     public function __construct(string $config_file)
     {
@@ -39,7 +39,7 @@ class Actions
             throw new ValidationException('Unknown account level');
         }
 
-        self::$httpClient = new HttpClient([
+        $this->httpClient = new HttpClient([
             'base_uri' => $base_uri
         ]);
     }
@@ -76,9 +76,9 @@ class Actions
             'username' => $this->config->get('account.username'),
             'password' => $this->config->get('account.password'),
         ];
-        $response = self::$httpClient->post(null, [
+        $response = $this->httpClient->post(null, [
             'http_errors' => true,
-            'headers'     => self::$headers,
+            'headers'     => $this->headers,
             'form_params' => array_merge($base_params, $params),
         ]);
 
